@@ -1,0 +1,9 @@
+# Used by apa_atingLab2019
+ConfigParser
+numpy
+pandas
+pysam
+argparse
+pyfaidx
+Bio
+deeptools

@@ -1,0 +1,9 @@
+	HCT116		DKO		Union	
+	pA sites	Genes	pA sites	Genes	pA sites	Genes
+All pA sites	32245	13369	25905	13359	35342	14585
+Unambig.Genes.gene	.	.	.	.	30112	11614
+Genes with more than 1 pA site	.	.	.	.	25420	6922
+p.adj < 0.0001	.	.	.	.	2015	1173
+Sites used > 5% in >= 1 cell line	.	.	.	.	1819	1106
+Site changes > 1.5 fold	.	.	.	.	1163	902
+> 10% shift in pA site usage	.	.	.	.	718	546

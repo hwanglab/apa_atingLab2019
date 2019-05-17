@@ -1,0 +1,8 @@
+# Private files
+/artwork/*
+/resource/geo_uploaded/*
+/resource/tcga_clinical_data/*
+/04_tcga/546goi_all/*
+/*.gz
+/*.bam
+/.idea/

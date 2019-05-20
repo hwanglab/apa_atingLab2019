@@ -60,7 +60,7 @@ git clone https://github.com/hwanglab/apa_2019.git
 	```
 	export R_UTIL=$HOME/projects/apa_atingLab2019/resource/libs
 	``` 
-#PolyA-seq data processing
+# PolyA-seq data processing
 
 1. Configure program paths and resource files
 	```bash
@@ -102,7 +102,7 @@ git clone https://github.com/hwanglab/apa_2019.git
 	Rscript ./05_plot_seqlogos.r
 	```
 
-#RNA-seq data processing  
+# RNA-seq data processing  
 1. Download RNA-seq FASTQ files 
 	```
 	cd apa_atingLab2019/02_mRNAseq
@@ -124,7 +124,7 @@ git clone https://github.com/hwanglab/apa_2019.git
 	bash ./04_apafactorexp.sh 8
 	```
 	
-#ChIP-seq data processing
+# ChIP-seq data processing
 
 1. We use ENCODE TF and Histone ChIP-Seq processing pipeine from Kundaje lab (e.g., chipseq.bds.20180726_175025_830). If you don't have the pipeline, then, 
 	1. Download the pipeline at https://github.com/kundajelab/chipseq_pipeline
@@ -187,7 +187,7 @@ git clone https://github.com/hwanglab/apa_2019.git
 	Rscript ./b05_cluster_analysis.r
 	```
 
-#TCGA
+# TCGA
 TCGA data access permission is required to complete this analysis. Consider the following scripts to figure out which procedures/parameters were used in the paper for reference. Contact us for more help.
 
 1. Change to TCGA working directory
@@ -211,3 +211,5 @@ TCGA data access permission is required to complete this analysis. Consider the 
 	cd ../04_tcga_clinical_info
 	bash ./runme.sh
 	```
+
+# Reference

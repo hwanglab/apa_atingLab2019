@@ -55,6 +55,7 @@ git clone https://github.com/hwanglab/apa_2019.git
 	twoBitToFa
 	wget
 	wigToBigWig
+	xz
 	```
 1. add R library path to your bash shell environment file ($HOME/.bashrc or $HOME/.bash_profile),
 	```
@@ -190,10 +191,13 @@ git clone https://github.com/hwanglab/apa_2019.git
 # TCGA
 TCGA data access permission is required to complete this analysis. Consider the following scripts to figure out which procedures/parameters were used in the paper for reference. Contact us for more help.
 
-1. Change to TCGA working directory
+1. Change to TCGA working directory and download a preprocessed data (TCGA methylation beta values and pA usage ratio on APA genes of interest).
 	```
 	cd $HOME/projects/apa_atingLab2019/04_tcga
+	bash ./01_resource_prep.sh
+	less -S 546goi_all/github_Supplementary_Table_S6.tsv #table
 	```
+
 1. Access TCGA RNA-Seq BAM files and 4500 Infinium methylation array. Compute predicted polyA usage and normalized methylation level (beta value). Visualize the correlation with adjusted P-value in scatter plots and gene track along with ChIP-seq binding site read pileup from the cell line model designed.
 	```
 	./02a_tcga_analy_apa_paur.r

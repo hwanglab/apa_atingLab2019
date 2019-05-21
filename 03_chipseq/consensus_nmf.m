@@ -63,7 +63,7 @@ end
 
 addpath('../resource/libs/nmf_bpas');
 
-m_nMaxIters = 500;
+m_nMaxIters = 100;
 m_rResRate = 0.8;
 
 m_nSamples = length(mc_Sample_Names);
@@ -109,7 +109,7 @@ for m_nselK = 1:length(m_vKs)
     
     fprintf('K = %d \n', K);
     
-    %- run the NMF 500 times
+    %- run the NMF 100 times
     m_mGroup = inf*ones(m_nSamples, m_nMaxIters);
     for m_niter = 1:m_nMaxIters
         %- resampling: randomly select 80% samples without replacement

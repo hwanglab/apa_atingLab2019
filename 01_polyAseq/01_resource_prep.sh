@@ -40,8 +40,6 @@ bowtie2 ${refd}/hg19_PhiX.fa ${refd}/hg19_PhiX
 echo "9. Download 01_polyAseq.data ..."
 apa_atingLab2019_data_url="http://apa_atingLab2019_data_url"
 
-
-
 polyAseq_data_url="https://s3.amazonaws.com/apa2019/01_polyAseq.data.tar.gz"
 
 wget -P $polyAseq_data_url

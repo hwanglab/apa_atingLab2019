@@ -67,7 +67,7 @@ git clone https://github.com/hwanglab/apa_2019.git
 	```bash
 	bash ./01_resource_prep.sh
 	```
-1. Download PolyA-seq FASTQ files 
+1. Download PolyA-seq FASTQ files. Note that, as of 05/21/2019, the SRA (SRP083252;https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE86178) is not public. Secure token is available only reviewers to access processed data. Any raw data is not available yet until it becomes public. 
 	```
 	cd 01_polyAseq
 	bash ./02_get_fastq.sh
@@ -104,7 +104,12 @@ git clone https://github.com/hwanglab/apa_2019.git
 	```
 
 # RNA-seq data processing  
-1. Download RNA-seq FASTQ files 
+1. Download RNA-seq FASTQ files. Note that, as of 05/21/2019, the SRAs, 
+	- SRP083252 (https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE86178)
+	- SRP083254 (https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE86180) 
+	
+	is not public. Secure tokens are available only reviewers to access processed data. Any raw data is not available yet until it becomes public.
+	
 	```
 	cd apa_atingLab2019/02_mRNAseq
 	bash ./01_get_fastq.sh
@@ -136,7 +141,7 @@ git clone https://github.com/hwanglab/apa_2019.git
 		- `/opt/bds_pipeline_genome_data/aquas_chipseq_species.conf` #species configuration file
 		- Make sure that the installation is successful
 		
-	1. Come back to the APA project directory, change to ChIP-seq working directory, and download ChIP/MBD-seq FASTQ files.
+	1. Come back to the APA project directory, change to ChIP-seq working directory, and download ChIP/MBD-seq (https://chipseq_url and https://www.ncbi.nlm.nih.gov/sra/SRP001414) FASTQ files. As of 05/21/2019, note that ChIP-seq raw fastq files are not in public.
 		```
 		cd $HOME/projects/apa_atingLab2019/03_chipseq
 		bash ./00_get_fastq.sh

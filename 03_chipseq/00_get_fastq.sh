@@ -12,7 +12,9 @@ rm -rf ${fastqd}/*.fastq.gz
 
 echo "Start to download ChIP-seq/MBD-seq FASTQ files ..."
 
-srrs=( SRR1234 SRR1235 SRR1236 SRR1237 ) #WARNING: modify this line!!!
+# https://www.ncbi.nlm.nih.gov/sra/SRP001414
+
+srrs=( SRR030224 SRR030225 SRR030220 SRR_Chipseq1 SRR_Chipseq2 )
 
 for srr in "${srrs[@]}"
 do

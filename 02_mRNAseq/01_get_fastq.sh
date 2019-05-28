@@ -12,7 +12,9 @@ rm -rf ${fastqd}/*.fastq.gz
 
 echo "Start to download mRNA-seq FASTQ files ..."
 
-srrs=( SRR1234 SRR1235 ) #WARNING: modify this line!!!
+echo "Contact to authors to obtain SRR IDs!"
+
+srrs=( SRR1234 SRR1235 )
 
 for srr in "${srrs[@]}"
 do

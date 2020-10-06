@@ -3,7 +3,7 @@ library(IlluminaHumanMethylation450kanno.ilmn12.hg19)
 library(RPMM)
 library(wateRmelon)
 library(parallel)
-source(file.path(Sys.getenv('R_UTIL'),'lib_util.R'))
+source(file.path(Sys.getenv('R_UTIL_APA'),'lib_util.R'))
 
 methyl450k_extract <- function(methyl_dt,tu_gr_ext,ncpu=1,debug=F){
   #Note that we use hg19 coordinates in 450k array in this function
@@ -143,7 +143,7 @@ load_fpkm_rnaseq <- function(fpkm_dt,ncpu=1,debug=F) {
   if (debug){browser()}
   
   
-  source(file.path(Sys.getenv('R_UTIL'),'lib_PRs.r'))
+  source(file.path(Sys.getenv('R_UTIL_APA'),'lib_PRs.r'))
   
   message('load read count matrix ...')
   exprs <- mclapply(1:nrow(fpkm_dt),function(i){
@@ -161,7 +161,7 @@ load_fpkm_rnaseq_on_goi <- function(fpkm_dt,ncpu=1,debug=F) {
   if (debug){browser()}
   mount_prefix <- get_mount_dir()
 
-  source(file.path(Sys.getenv('R_UTIL'),'lib_PRs.r'))
+  source(file.path(Sys.getenv('R_UTIL_APA'),'lib_PRs.r'))
   
   prepropa_rd <- file.path(mount_prefix,'apa_atingLab2019','01_polyAseq','01_wkd','out','03_CallApa','output','prepropa.rd')
   
@@ -187,7 +187,7 @@ load_fpkm_rnaseq_on_goi <- function(fpkm_dt,ncpu=1,debug=F) {
 }
 
 map_uuid_to_submitter_id <- function(uuids){
-  source(file.path(Sys.getenv('R_UTIL'),'tcga_id_map.R'))
+  source(file.path(Sys.getenv('R_UTIL_APA'),'tcga_id_map.R'))
   ret <- TCGAtranslateID(uuids)
   return(ret[match(uuids,ret$file_id),"submitter_id"])
 }

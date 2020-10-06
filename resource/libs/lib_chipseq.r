@@ -1,4 +1,4 @@
-source(sprintf('%s/lib_util.R',Sys.getenv('R_UTIL')))
+source(sprintf('%s/lib_util.R',Sys.getenv('R_UTIL_APA')))
 library(data.table)
 library(openxlsx)
 library(goldmine)
@@ -7,7 +7,7 @@ library(gsubfn)
 
 mount_prefix <- get_mount_dir()
 
-source(file.path(Sys.getenv('R_UTIL'),'lib_PRs.r'))
+source(file.path(Sys.getenv('R_UTIL_APA'),'lib_PRs.r'))
 
 get_chipseq_bam <- function(mount_prefix){
   

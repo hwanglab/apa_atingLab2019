@@ -396,7 +396,7 @@ get_tagMatrixList <- function(asignal,window_grs,bgnd1,bgnd2_sampled,extbp,rd_fn
 
 get_heatmaps <- function(tagMatrixList,axis_args2,xlab2,L){
 
-  source(file.path(Sys.getenv('R_UTIL'),'lib_util.R'))
+  source(file.path(Sys.getenv('R_UTIL_APA'),'lib_util.R'))
   maxVal <- get_max_val_in_list(tagMatrixList)
   if (maxVal>0){
     minVal <- get_min_val_in_list(tagMatrixList)/maxVal

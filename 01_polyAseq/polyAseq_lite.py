@@ -88,7 +88,7 @@ class cPolyAseq:
 		self.exp_tag = args.exp_tag
 		self.barcode_fn = args.barcode_fn
 		self.fq_index_fn = check_if_file_valid(
-			os.path.join(os.path.dircPolyAseqname(self.comp_group_fn), 'fastq_index.csv'),error_flag=True)
+			os.path.join(os.path.dirname(self.comp_group_fn), 'fastq_index.csv'),error_flag=True)
 
 		self.bam_dir = None
 		self.gfa_bam_dir = None
@@ -480,7 +480,7 @@ class cPolyAseq:
 			
 			
 	def prepropa(self):
-		self.step += 1
+		self.step += 1 #17
 		mS = mStep('CallApa', self.step)
 		self.mSteps.append(mS)
 
@@ -520,7 +520,7 @@ class cPolyAseq:
 	def testbatchadj(self):
 
 		sstep_name = 'testbatchadj'
-		self.sstep += 1
+		self.sstep += 1 #18
 		self.print_msg(self.mSteps[-1], sstep_name)
 		out_dir = self.mSteps[-1].get_out_dir(self.work_dir)
 		out_fn = os.path.join(out_dir, 'output', 'apa.rd')
@@ -545,7 +545,7 @@ class cPolyAseq:
 
 	def alttests(self,apa_rd):
 		sstep_name = 'alttests'
-		self.sstep += 1
+		self.sstep += 1 #19
 		self.print_msg(self.mSteps[-1], sstep_name)
 		out_dir = self.mSteps[-1].get_out_dir(self.work_dir)
 		out_fn = os.path.join(out_dir, 'output', 'apa.alt.rd')
@@ -567,7 +567,7 @@ class cPolyAseq:
 
 	def callsig(self,apa_alt_rd):
 		sstep_name = 'callsig'
-		self.sstep += 1
+		self.sstep += 1 #20
 		self.print_msg(self.mSteps[-1], sstep_name)
 		out_dir = self.mSteps[-1].get_out_dir(self.work_dir)
 
@@ -589,7 +589,7 @@ class cPolyAseq:
 
 	def reporting(self,apa_sig_rd):
 		sstep_name = 'reporting'
-		self.sstep += 1
+		self.sstep += 1 #21
 		self.print_msg(self.mSteps[-1], sstep_name)
 		out_dir= ensure_dir(os.path.join(self.mSteps[-1].get_out_dir(self.work_dir), 'output'))
 
@@ -613,7 +613,7 @@ class cPolyAseq:
 
 	def intersect_gainedlost(self,apa_sig_rd):
 		sstep_name = 'intersect_gainedlost'
-		self.sstep += 1
+		self.sstep += 1 #22
 		self.print_msg(self.mSteps[-1], sstep_name)
 		out_dir= ensure_dir(os.path.join(self.mSteps[-1].get_out_dir(self.work_dir), 'output'))
 
@@ -638,7 +638,7 @@ class cPolyAseq:
 
 	def plot_hexamer(self):
 		sstep_name = 'plot_hexamer'
-		self.sstep += 1
+		self.sstep += 1 #23
 		out_dir = os.path.join(self.mSteps[-1].get_out_dir(self.work_dir), 'output')
 
 		self.print_msg(self.mSteps[-1], sstep_name)
@@ -658,7 +658,7 @@ class cPolyAseq:
 	
 	def prepropa_to_excel(self):
 		sstep_name = 'prepropa_to_excel'
-		self.sstep += 1
+		self.sstep += 1 #24
 		in_dir = self.mSteps[-1].get_out_dir(self.work_dir)
 
 		self.print_msg(self.mSteps[-1], sstep_name)
@@ -668,7 +668,7 @@ class cPolyAseq:
 			log_prefix = os.path.join(self.get_log_dir(), '%02d_%s' % (self.sstep, sstep_name))
 
 			run_syscmd_wrapper("Rscript %s" % prog_path,
-												 inopt="-i %s" % self.in_dir,
+												 inopt="-i %s" % in_dir,
 												 stdout_fn="%s.out" % log_prefix,
 												 stderr_fn="%s.err" % log_prefix,
 												 debug=self.pconf.debug)
@@ -677,7 +677,7 @@ class cPolyAseq:
 	
 	def rep_cor(self):
 		sstep_name = 'rep_cor'
-		self.sstep += 1
+		self.sstep += 1 #25
 		in_dir = self.mSteps[-1].get_out_dir(self.work_dir)
 		apa_sig_rd = os.path.join(in_dir, 'output', 'apa.sig.rd')
 
@@ -700,13 +700,13 @@ class cPolyAseq:
 		prev_out_dir = self.mSteps[-1].get_out_dir(self.work_dir)
 		apa_sig_rd = os.path.join(prev_out_dir, 'output', 'apa.sig.rd')
 
-		self.step += 1
+		self.step += 1 #26
 		mS = mStep('AnnoApa', self.step)
 		self.mSteps.append(mS)
 		sstep_name = 'mostupdown'
 		self.sstep += 1
 		self.print_msg(self.mSteps[-1], sstep_name)
-                out_dir= ensure_dir(os.path.join(self.mSteps[-1].get_out_dir(self.work_dir), 'output'))
+		out_dir= ensure_dir(os.path.join(self.mSteps[-1].get_out_dir(self.work_dir), 'output'))
 		out_fn = os.path.join(out_dir, 'apa.ann.rd')
 
 		if self.sstep >= self.pconf.resume:
@@ -721,21 +721,18 @@ class cPolyAseq:
 												 stderr_fn="%s.err" % log_prefix,
 												 debug=self.pconf.debug)
 		
-		_ = self.mostupdown_all_samples()
+		_ = self.mostupdown_all_samples(apa_sig_rd)
 	
 	
-	def mostupdown_all_samples(self):
+	def mostupdown_all_samples(self,apa_sig_rd):
 
-		prev_out_dir = self.mSteps[-1].get_out_dir(self.work_dir)
-		apa_sig_rd = os.path.join(prev_out_dir, 'output', 'apa.sig.rd')
-
-		self.step += 1
+		self.step += 1 #27
 		mS = mStep('AnnoApa', self.step)
 		self.mSteps.append(mS)
 		sstep_name = 'mostupdown_all_samples'
 		self.sstep += 1
 		self.print_msg(self.mSteps[-1], sstep_name)
-                out_dir= ensure_dir(os.path.join(self.mSteps[-1].get_out_dir(self.work_dir), 'output'))
+		out_dir= ensure_dir(os.path.join(self.mSteps[-1].get_out_dir(self.work_dir), 'output'))
 
 		if self.sstep >= self.pconf.resume:
 			prog_path = self.pconf.sections[sstep_name]['bin_path']

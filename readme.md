@@ -59,7 +59,8 @@ git clone https://github.com/hwanglab/apa_2019.git
 	```
 1. add R library path to your bash shell environment file ($HOME/.bashrc or $HOME/.bash_profile),
 	```
-	export R_UTIL=$HOME/projects/apa_atingLab2019/resource/libs
+	export R_UTIL_APA=$HOME/projects/apa_atingLab2019/resource/libs
+	export PADD_GIT=$HOME/projects/apa_atingLab2019/01_polyAseq/paddle-git
 	``` 
 # PolyA-seq data processing
 

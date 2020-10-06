@@ -1,13 +1,12 @@
 library(handy)
 library(argparse)
 
-source(file.path(Sys.getenv('R_UTIL'),'paddle.r'))
+source(file.path(Sys.getenv('R_UTIL_APA'),'paddle.r'))
+source(file.path(Sys.getenv('PADD_GIT'),'readGtf.r'))
 
 if (T) { #debug
   args_tmp <- commandArgs(trailingOnly = F)
   scriptPath <- dirname(normalizePath(sub("--file=","",args_tmp[grep("--file",args_tmp)])))
-  source_root <- dirname(dirname(scriptPath))
-  source(file.path(source_root,'paddle-git','readGtf.r'))
 
   parser <- ArgumentParser(description='prepropa')
   

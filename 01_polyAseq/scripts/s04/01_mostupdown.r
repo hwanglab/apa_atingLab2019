@@ -3,7 +3,7 @@ library(argparse)
 library(data.table)
 library(ggplot2)
 
-source(file.path(Sys.getenv('R_UTIL'),'paddle.r'))
+source(file.path(Sys.getenv('R_UTIL_APA'),'paddle.r'))
 
 if (T) {
   parser <- ArgumentParser(description='mostupdown')
@@ -15,12 +15,12 @@ if (T) {
   parser$add_argument("-i", "--input_file", type="character", required=TRUE,
   										dest="input_file",
   										help="rscript workspace rd file")
-   parser$add_argument("-c", "--control_tag", type="character", required=FALSE, default="HCT116",
-  										dest="control_tag",
+   parser$add_argument("-c", "--control_tag", type="character", required=FALSE,
+   										default="HCT116", dest="control_tag",
   										help="control group tag [HCT116]")
    
-   parser$add_argument("-e", "--exp_tag", type="character", required=FALSE, default="DKO",
-  										dest="exp_tag",
+   parser$add_argument("-e", "--exp_tag", type="character", required=FALSE, 
+   										default="DKO", dest="exp_tag",
   										help="experimental group tag [DKO]")
 
   parser$add_argument("-o", "--output_file", type="character", required=TRUE,
@@ -109,7 +109,7 @@ plot_pau_usage_comparison <- function(myres, apa.calls, control_tag,exp_tag,outp
   pdf_file <- file.path(output_dir,sprintf("pau_scatter_%s_vs_%s.pdf",control_tag,exp_tag))
   pdf(pdf_file)
   
-  browser()
+  # browser()
   apa_calls <- apa.calls[,c("tu", "gene_name", "mcall")]
   myres_mcall <- merge(myres, apa_calls, by = c("tu","gene_name"), all.x=T, allow.cartesian=TRUE)
   
@@ -154,10 +154,13 @@ apa.calls <- callMUD(apa.int)
 
 save(apa.int,apa.calls,compress=T,file=args$output_file)
 
+out_dir <- dirname(args$output_file)
 apa_sig_res_annot <- plot_pau_usage_comparison(apa.sig[[comp_tag]]$res, 
                                                apa.calls, 
                                                args$control_tag, 
                                                args$exp_tag, 
-                                               output_dir = dirname(args$output_file))
+                                               output_dir = out_dir)
 
-fwrite(apa_sig_res_annot,file='../../01_wkd/out/04_AnnoApa/output/plot_pau_usage_comp_scatter.tsv',sep='\t')
+pau_scatter_fpath <- file.path(out_dir,'plot_pau_usage_comp_scatter.tsv')
+
+fwrite(apa_sig_res_annot,file=pau_scatter_fpath,sep='\t')

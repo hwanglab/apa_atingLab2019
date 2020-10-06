@@ -1,7 +1,7 @@
 library(argparse)
 library(data.table)
 
-source(file.path(Sys.getenv('R_UTIL'),'paddle.r'))
+source(file.path(Sys.getenv('R_UTIL_APA'),'paddle.r'))
 
 if (T) {
   parser <- ArgumentParser(description='prepropa')
@@ -15,15 +15,15 @@ if (T) {
                       help="polya database file path")
   
   parser$add_argument("-c", "--ctrl", type="character", required=FALSE,
-                      dest="ctrl",
+                      dest="ctrl", default="HCT116",
                       help="control group tag [HCT116]")
   
   parser$add_argument("-e", "--expr", type="character", required=FALSE,
-                      dest="expr",
+                      dest="expr", default="DKO",
                       help="experimental group tag [DKO]")
   
   parser$add_argument("-t", "--tmp_dir", type="character", required=FALSE,
-                      dest="tmp_dir",
+                      dest="tmp_dir", default="/tmp",
                       help="temporary directory [/tmp]")
   
   parser$add_argument("-o", "--out_dir", type="character", required=TRUE,
@@ -35,6 +35,7 @@ if (T) {
   args <- data.table(prepropa='../../01_wkd/out/03_CallApa/output/prepropa.rd',
                      ctrl='HCT116',
                      expr='DKO',
+                     tmp_dir="/tmp",
                      polyadb_fpath="../../data/polya_db2/PolyADB_2.bed",
                      out_dir="../../01_wkd/out/03_CallApa/output")
 }
@@ -73,7 +74,7 @@ padp <- countHexes(gr=pa)
 hexlist$pAdb2 <- padp
 
 # Null
-tmp_dir <- "/tmp/10_pas_stats_figure"
+tmp_dir <- file.path(args$tmp,"10_pas_stats_figure")
 if (!dir.exists(tmp_dir)) {dir.create(tmp_dir)}
 
 cnt <- pr$means$raw

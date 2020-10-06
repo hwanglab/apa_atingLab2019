@@ -45,7 +45,7 @@ if (T) {
 
 # Save all the parts we'd like to have for the purposes of screening the APA calls
 
-source(file.path(Sys.getenv('R_UTIL'),'paddle.r'))
+source(file.path(Sys.getenv('R_UTIL_APA'),'paddle.r'))
 load(args$pre_apa_rd)
 load(args$apa_sig_rd)
 

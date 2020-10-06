@@ -1,4 +1,5 @@
 library(argparse)
+library(data.table)
 
 debug <- FALSE
 if (!debug) {
@@ -40,12 +41,18 @@ if (!debug) {
   
   args <- parser$parse_args()
 
+} else {
+args <- data.table(bam_co="~/projects/apa_atingLab2019/03_chipseq/fastq/bt2/HCT116_Mbd.bam",
+										 bam_tr="~/projects/apa_atingLab2019/03_chipseq/fastq/bt2/DKO_Mbd.bam",
+										 peak_type="broad",
+										 peak_merge_method="merged",
+										 min_mapq=0,
+										 out_dir="~/projects/apa_atingLab2019/03_chipseq/fastq/bt2/HCT116_DKO_deseq2")
 }
 
-library(data.table)
 library(parallel)
 library(Rsubread)
-source(file.path(Sys.getenv('R_UTIL'),'lib_apps.R'))
+source(file.path(Sys.getenv('R_UTIL_APA'),'lib_apps.R'))
 
 dir.create(args$out_dir, showWarnings = FALSE)
 
@@ -75,7 +82,7 @@ samp$peak_tsv <- mapply(macs2_peak,
                         samp$name,
                         file.path(args$out_dir,samp$name),
                         MoreArgs = list(peak_type=args$peak_type,
-                                        out_prefix='narrow'))
+                                        out_prefix=args$peak_type))
 if (args$peak_merge_method=='concat'){
 	message('narrow_peak1, narrow_peak2 --> concatenating --> unified peaks')
 	peak12 <- macs2_narrowpeak_concat(samp$peak_tsv)

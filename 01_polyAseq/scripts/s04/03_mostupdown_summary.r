@@ -2,7 +2,7 @@
 library(argparse)
 library(data.table)
 
-source(file.path(Sys.getenv('R_UTIL'),'paddle.r'))
+source(file.path(Sys.getenv('R_UTIL_APA'),'paddle.r'))
 if (T) {
   parser <- ArgumentParser(description='summary_apa_table')
   debug <- T

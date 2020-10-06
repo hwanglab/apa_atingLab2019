@@ -2,12 +2,11 @@
 library(argparse)
 library(data.table)
 
-source(file.path(Sys.getenv('R_UTIL'),'paddle.r'))
+source(file.path(Sys.getenv('R_UTIL_APA'),'paddle.r'))
 if (T) {
 
   parser <- ArgumentParser(description='mostupdown')
-  debug <- T
-  
+
   parser$add_argument("-n", "--ncpu", type="integer", required=FALSE,
   										dest="ncpu", default = 1,
   										help="number of cpus to utilize [1]")

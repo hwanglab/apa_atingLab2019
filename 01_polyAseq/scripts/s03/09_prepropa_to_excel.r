@@ -12,15 +12,15 @@ if (T) {
   parser <- ArgumentParser(description='prepropa')
   
   parser$add_argument("-i", "--comp_dir", type="character", required=TRUE,
-                      dest="in_dir",
+                      dest="comp_dir",
                       help="input directory")
   
-  parser$add_argument("-c", "--control_tag", type="character", required=FALSE, default="HCT116",
-                      dest="control_tag",
+  parser$add_argument("-c", "--control_tag", type="character", required=FALSE, 
+                      dest="control_tag", default="HCT116",
                       help="control group tag [HCT116]")
   
-  parser$add_argument("-e", "--exp_tag", type="character", required=FALSE, default="DKO",
-                      dest="exp_tag",
+  parser$add_argument("-e", "--exp_tag", type="character", required=FALSE, 
+                      dest="exp_tag",default="DKO",
                       help="experimental group tag [DKO]")
 
   args <- parser$parse_args()
@@ -32,23 +32,18 @@ if (T) {
 
 prepropa_to_excel <- function(sample_tags,comp_dir) {
   
-  browser()
-  
+  # browser()
   ctrl_tag <- sample_tags[1]
   expr_tag <- sample_tags[2]
   
-  # file <- sprintf('/media/tommy/cache/exp_out/ating/polyASeqs/03_CallApa/%s_vs_%s_APA.csv',ctrl_tag,expr_tag)
+  polya_dex_file <- sprintf('%s/%s_vs_%s_APA.csv',comp_dir,ctrl_tag,expr_tag)
   
-  file <- sprintf('%s/%s_vs_%s_APA.csv',comp_dir,ctrl_tag,expr_tag)
-  
-  message(file)
-  stopifnot(file.exists(file))
-  
-  #out_file <- sprintf('/media/tommy/cache/exp_out/ating/polyASeqs/03_CallApa/%s_vs_%s_APA.xlsx',ctrl_tag,expr_tag)
+  message(polya_dex_file)
+  stopifnot(file.exists(polya_dex_file))
   
   out_file <- sprintf('%s/%s_vs_%s_APA.xlsx',comp_dir,ctrl_tag,expr_tag)
   
-  dt <- fread(file,header = T)
+  dt <- fread(polya_dex_file,header = T,sep = ",")
   cn <- colnames(dt)
   setnames(dt,"chr","pr_chr")
   setnames(dt,"start","pr_start")

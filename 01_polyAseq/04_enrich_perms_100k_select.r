@@ -1,7 +1,7 @@
 library(goldmine)
 
-source(file.path(Sys.getenv('R_UTIL'),'lib_util.R'))
-source(file.path(Sys.getenv('R_UTIL'),'lib_apps.R'))
+source(file.path(Sys.getenv('R_UTIL_APA'),'lib_util.R'))
+source(file.path(Sys.getenv('R_UTIL_APA'),'lib_apps.R'))
 mount_prefix <- get_mount_dir()
 
 apa_sig_rd <- file.path(mount_prefix,'apa_atingLab2019','01_polyAseq','01_wkd','out','03_CallApa','output','apa.sig.rd')

@@ -1,6 +1,6 @@
 # Collation of stats of read counts and where they went and why
 
-source(file.path(Sys.getenv('R_UTIL'),'paddle.r'))
+source(file.path(Sys.getenv('R_UTIL_APA'),'paddle.r'))
 
 load("../03_CallApa/output/prepro.rd")
 load("../03_CallApa/output/apa.sig.rd")

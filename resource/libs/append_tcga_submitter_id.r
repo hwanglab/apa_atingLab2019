@@ -1,6 +1,6 @@
 library(argparse)
 library(data.table)
-source(file.path(Sys.getenv('R_UTIL'),'tcga_id_map.R'))
+source(file.path(Sys.getenv('R_UTIL_APA'),'tcga_id_map.R'))
 
 if (TRUE) { #debug
   args_tmp <- commandArgs(trailingOnly = F)

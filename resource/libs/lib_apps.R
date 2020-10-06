@@ -140,7 +140,7 @@ macs2_narrowpeak_concat <- function(macs2_peaks) {
 
   cmd <- sprintf('cat %s %s | sort -k1,1V -k2,2n -k3,3n',tmp_out1,tmp_out2)
   
-  merged <- fread(cmd,col.names=c('Chr','Start','End'))
+  merged <- fread(cmd=cmd,col.names=c('Chr','Start','End'))
   merged$GeneID <- paste0('macs2_',1:dim(merged)[1])
   merged$Strand <- '*'
 
@@ -157,18 +157,18 @@ macs2_narrowpeak_merge <- function(macs2_peaks) {
   } else {grep_cmd <- 'grep'}
   cmd <- sprintf("%s -v ^# %s | cut -f1,2,3 | sort -k1,1V -k2,2n -k3,3n",grep_cmd,macs2_peaks[1])
   message(cmd)
-  dts[[1]] <- fread(cmd)
+  dts[[1]] <- fread(cmd=cmd)
   
   if (endsWith(macs2_peaks[2], ".gz")) {grep_cmd <- 'zgrep'
   } else {grep_cmd <- 'grep'}
   cmd <- sprintf("%s -v ^# %s | cut -f1,2,3 | sort -k1,1V -k2,2n -k3,3n",grep_cmd,macs2_peaks[2])
   message(cmd)
-  dts[[2]] <- fread(cmd)
+  dts[[2]] <- fread(cmd=cmd)
   
   peaks <- lapply(dts,function(x){
-    GRanges(seqnames = x$V1,
-            ranges = IRanges(start = x$V2,
-                             end = x$V3))
+    GRanges(seqnames = x$chr,
+            ranges = IRanges(start = x$start,
+                             end = x$end))
   })
   merged <- union(peaks[[1]],peaks[[2]])
   merged_dt <- data.table(GeneID=paste0('macs2_',1:length(merged)),
@@ -376,7 +376,7 @@ run_deseq2 <- function(deseq2_input,out_dir,shrink_lfc=FALSE,alpha=0.1) {
   
   dds <- DESeqDataSetFromMatrix(countData = deseq2_input$cts,
                                 colData = deseq2_input$coldata,
-                                design = ~ group)
+                                design = ~group)
   dds <- DESeq(dds)
 
   if (shrink_lfc){ #apply fc shrinkage with apeglm

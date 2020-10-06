@@ -1,8 +1,8 @@
 library(handy)
 library(argparse)
 
-source(file.path(Sys.getenv('R_UTIL'),'lib_apps.R'))
-source(file.path(Sys.getenv('R_UTIL'),'paddle.r'))
+source(file.path(Sys.getenv('R_UTIL_APA'),'lib_apps.R'))
+source(file.path(Sys.getenv('R_UTIL_APA'),'paddle.r'))
 debug2 <- F
 
 if (!debug2){

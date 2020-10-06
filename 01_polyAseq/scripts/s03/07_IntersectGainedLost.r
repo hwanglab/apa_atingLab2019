@@ -5,7 +5,7 @@ library(matrixStats)
 library(handy)
 library(argparse)
 
-source(file.path(Sys.getenv('R_UTIL'),'paddle.r'))
+source(file.path(Sys.getenv('R_UTIL_APA'),'paddle.r'))
 
 parser <- ArgumentParser(description='geneplots')
 

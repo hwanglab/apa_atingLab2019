@@ -4,7 +4,7 @@ library(argparse)
 library(data.table)
 library(parallel)
 library(Rsubread)
-source(file.path(Sys.getenv('R_UTIL'),'lib_apps.R'))
+source(file.path(Sys.getenv('R_UTIL_APA'),'lib_apps.R'))
 
 # diffReps - Detect Differential Sites from ChIP-seq with Biological Replicates.
 # 

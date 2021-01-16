@@ -31,10 +31,16 @@ class ProgramConfig:
 		self.fpath = config_file
 
 	def complete_filepath(self,fpath):
-		if os.path.sep in fpath:
-			if not fpath.startswith(os.path.sep):
-				fpath = os.path.join(self.prog_rootdir, fpath)
-		return fpath
+		fpath2 = fpath.split()
+		if len(fpath2)>2:
+			raise RuntimeError('check the file configuration [%s] at [%s]'%(fpath,self.fapth))
+		fpath1 = fpath2[-1]
+		if os.path.sep in fpath1:
+			if not fpath1.startswith(os.path.sep) or not fpath1.startswith("~"):
+				fpath1 = os.path.join(self.prog_rootdir, fpath1)
+		if len(fpath2)==2:
+			fpath1 = "%s %s"%(fpath2[0],fpath1)
+		return fpath1
 
 	def load_items(self):
 		if not self.fpath:

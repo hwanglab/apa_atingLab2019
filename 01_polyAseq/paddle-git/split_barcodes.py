@@ -26,7 +26,7 @@ def mymatcher(mycode):
 
 parser = argparse.ArgumentParser(description="Split a FASTQ file based on barcodes at start of read.", epilog="Creates a new file for each barcode.")
 
-parser.add_argument('-i','--inpath', dest='inpath', metavar='PATH_TO_GZIPPED_FASTQ', action='store', required=True, help='Path to .fastq.gz file to use as input.')
+parser.add_argument('-i','--inpath', dest='inpath', metavar='PATH_TO_GZIPPED_FASTQ', action='store', required=True, help='Path to .fastq(.gz) file to use as input.')
 
 parser.add_argument('-o','--outdir', dest='outdir', metavar='PATH_TO_OUTPUT_DIR', action='store', default="", help='Path to place split .fastq.gz files in (default: current working directory)')
 parser.add_argument('--mm', dest='mm', metavar='ALLOWED_MISMATCHES', action='store', default=0, help='Number of mismatches to allow when matching barcodes (default: 0)')
@@ -40,7 +40,8 @@ if not os.path.exists(args.outdir):
 if not os.path.exists(args.barcode_fn):
 	raise IOError('barcode file [%s] does not exist'%args.barcode_fn)
 
-outbase = re.sub(r'\.fastq\.gz$', '', args.inpath)
+outbase = re.sub(r'\.fastq', '', args.inpath)
+outbase = re.sub(r'\.gz$', '', outbase)
 outbase = os.path.basename(outbase)
 outbase = os.path.join(args.outdir,outbase)
 
@@ -79,61 +80,66 @@ outs_hist = array(outs_hist)
 #print outs_hist
 record = []
 
-with gzip.open(args.inpath,'r') as f:
-	lineno = 1
-	recno = 1
-	for line in f:
-		record.append(line)
-		# work in blocks of 4
-		if lineno == 4:
-			#print "got record"
-			myseq = record[1][0:6]
-			#print myseq
-			scores = array(map(mymatcher,barcodes))
-			#print scores
-			#print min(scores)
+if (args.inpath.endswith('.gz')):
+	f = gzip.open(args.inpath,'r')
+else:
+	f = open(args.inpath, 'r')
 
-			# Select the match we want
-			matched = barcodes[scores==min(scores)]
-			if(min(scores)>int(args.mm)):
-				matched = array([])
+lineno = 1
+recno = 1
+for line in f:
+	record.append(line)
+	# work in blocks of 4
+	if lineno == 4:
+		#print "got record"
+		myseq = record[1][0:6]
+		#print myseq
+		scores = array(map(mymatcher,barcodes))
+		#print scores
+		#print min(scores)
 
-			# Prep the output
-			myflank = record[1][6:12]
-			thename = record[0]
-			theseq = record[1][12:len(record[1])]
-			thesep = record[2]
-			thequals = record[3][12:len(record[3])]
+		# Select the match we want
+		matched = barcodes[scores==min(scores)]
+		if(min(scores)>int(args.mm)):
+			matched = array([])
 
-			thename = re.sub(r' ','_',thename)
-			thename = thename.rstrip("\n")
-			thename = thename + "_" + myseq + "_" + myflank + "\n"
+		# Prep the output
+		myflank = record[1][6:12]
+		thename = record[0]
+		theseq = record[1][12:len(record[1])]
+		thesep = record[2]
+		thequals = record[3][12:len(record[3])]
 
-			if matched.size > 1:
-				raise Exception('Matched more than one barcode!')
-			elif matched.size == 0:
-				#print "Matched no barcodes!"
-				unk_hist[myseq] += 1
-				out_unk.write(thename)
-				out_unk.write(theseq)
-				out_unk.write(thesep)
-				out_unk.write(thequals)
-			elif matched.size == 1:
-				#print "Matched Barcode: " + matched[0] + " for " + myseq + " (mismatches=" + str(min(scores)) + ")"
-				outs[scores==min(scores)][0].write(thename)
-				outs[scores==min(scores)][0].write(theseq)
-				outs[scores==min(scores)][0].write(thesep)
-				outs[scores==min(scores)][0].write(thequals)
-				outs_hist[scores==min(scores)][0][myseq] += 1
-			# reset iteration
-			record = []
-			lineno = 0
-			if (recno % 1000000) == 0:
-				print "Done with Record Number: " + str(recno)
-				sys.stdout.flush()
-			recno += 1
-		lineno += 1
-		
+		thename = re.sub(r' ','_',thename)
+		thename = thename.rstrip("\n")
+		thename = thename + "_" + myseq + "_" + myflank + "\n"
+
+		if matched.size > 1:
+			raise Exception('Matched more than one barcode!')
+		elif matched.size == 0:
+			#print "Matched no barcodes!"
+			unk_hist[myseq] += 1
+			out_unk.write(thename)
+			out_unk.write(theseq)
+			out_unk.write(thesep)
+			out_unk.write(thequals)
+		elif matched.size == 1:
+			#print "Matched Barcode: " + matched[0] + " for " + myseq + " (mismatches=" + str(min(scores)) + ")"
+			outs[scores==min(scores)][0].write(thename)
+			outs[scores==min(scores)][0].write(theseq)
+			outs[scores==min(scores)][0].write(thesep)
+			outs[scores==min(scores)][0].write(thequals)
+			outs_hist[scores==min(scores)][0][myseq] += 1
+		# reset iteration
+		record = []
+		lineno = 0
+		if (recno % 1000000) == 0:
+			print "Done with Record Number: " + str(recno)
+			sys.stdout.flush()
+		recno += 1
+	lineno += 1
+f.close()
+
 for o in outs:
 	o.close()
 out_unk.close()

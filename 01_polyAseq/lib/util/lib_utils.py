@@ -568,7 +568,6 @@ def count_existing_paths(fpaths):
 
 	return fcnt
 
-
 def run_syscmd_wrapper(prog_cmd,
 											 inopt=None,
 											 outopt=None,
@@ -576,6 +575,7 @@ def run_syscmd_wrapper(prog_cmd,
 											 stdout_fn=None,
 											 stderr_fn=None,
 											 debug=False):
+
 	cmd = prog_cmd
 	if inopt:
 		cmd += " %s" % inopt
@@ -584,10 +584,9 @@ def run_syscmd_wrapper(prog_cmd,
 	if runopt:
 		cmd += " %s" % runopt
 
-	print cmd
+	msgout("notice", cmd)
 	if not debug:
 		run_syscmd(cmd, stdout_fn=stdout_fn, stderr_fn=stderr_fn)
-
 
 def parse_file_name(fpath):
 

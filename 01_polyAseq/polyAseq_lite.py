@@ -5,7 +5,7 @@ author: hongc2@ccf.org
 '''
 import os, sys, argparse
 import inspect
-from lib.util.lib_utils import run_syscmd_wrapper, get_abspath_or_error, ensure_dir, check_if_file_valid
+from lib.util.lib_utils import run_syscmd_wrapper, get_abspath_or_error, ensure_dir, check_if_file_valid, msgout
 from lib.util.lib_par import par_shell_runs, find_error_index_from_retcodes
 from lib.file_configs import ProgramConfig
 
@@ -35,7 +35,9 @@ def split_barcodes_core(fastq_dir,
 	arg_sets = []
 
 	for fn in fns:
-		if fn.endswith('.fastq.gz'):
+		msgout("notice","checking if [%s] is FASTQ file ..."%fn)
+		if fn.endswith('.fastq.gz') or fn.endswith('.fastq'):
+
 			cmd = prog_path
 			cmd += " --outdir %s" % out_dir
 			cmd += " --mm %d" % max_mismatch
@@ -43,6 +45,7 @@ def split_barcodes_core(fastq_dir,
 			cmd += " --inpath %s"%os.path.join(fastq_dir,fn)
 			stdout_fn = "%s_%s.out" % (log_prefix,fn)
 			stderr_fn = "%s_%s.err" % (log_prefix,fn)
+			msgout("notice",cmd)
 			arg_sets.append((cmd,stdout_fn,stderr_fn,False,))
 
 	if not debug: #debug
@@ -153,7 +156,7 @@ class cPolyAseq:
 			prog_path = self.pconf.sections[sstep_name]['bin_path']
 			log_prefix = os.path.join(self.get_log_dir(),'%02d_%s'%(self.sstep,sstep_name))
 
-			run_syscmd_wrapper("Rscript %s"%prog_path,
+			run_syscmd_wrapper(prog_path,
 												 inopt="-i %s"%inpath,
 												 stdout_fn="%s.out" % log_prefix,
 												 stderr_fn="%s.err" % log_prefix,
@@ -201,7 +204,7 @@ class cPolyAseq:
 			prog_path = self.pconf.sections[sstep_name]['bin_path']
 			log_prefix = os.path.join(self.get_log_dir(), '%02d_%s'%(self.sstep,sstep_name))
 
-			run_syscmd_wrapper("Rscript %s" % prog_path,
+			run_syscmd_wrapper(prog_path,
 												 inopt="-i %s" % inpath,
 												 outopt="-o %s" % outpath,
 												 stdout_fn="%s.out" % log_prefix,
@@ -243,7 +246,7 @@ class cPolyAseq:
 			prog_path = self.pconf.sections[sstep_name]['bin_path']
 			log_prefix = os.path.join(self.get_log_dir(), '%02d_%s'%(self.sstep,sstep_name))
 
-			run_syscmd_wrapper("Rscript %s" % prog_path,
+			run_syscmd_wrapper(prog_path,
 												 inopt="-i %s" % inpath,
 												 outopt="-o %s" % outpath,
 												 stdout_fn="%s.out" % log_prefix,
@@ -273,7 +276,7 @@ class cPolyAseq:
 
 			log_prefix = os.path.join(self.get_log_dir(), '%02d_%s' % (self.sstep, sstep_name))
 
-			run_syscmd_wrapper("Rscript %s" % prog_path,
+			run_syscmd_wrapper(prog_path,
 												 inopt="-i %s" % inpath,
 												 outopt="-o %s" % script_dir,
 												 runopt=runopt,
@@ -316,7 +319,7 @@ class cPolyAseq:
 
 			log_prefix = os.path.join(self.get_log_dir(),'%02d_%s' % (self.sstep, sstep_name))
 			runopt = "-n %d"%self.pconf.ncpu
-			run_syscmd_wrapper("Rscript %s" % prog_path,
+			run_syscmd_wrapper(prog_path,
 												 inopt="-i %s" % self.bam_dir,
 												 outopt="-o %s" % mod_bam_dir,
 												 runopt=runopt,
@@ -401,7 +404,7 @@ class cPolyAseq:
 	
 			log_prefix = os.path.join(self.get_log_dir(), '%02d_%s' % (self.sstep, sstep_name))
 			runopt = "-f %s"%self.fq_index_fn
-			run_syscmd_wrapper("Rscript %s" % prog_path,
+			run_syscmd_wrapper(prog_path,
 												 inopt = "-i %s" % dedup_dir,
 												 runopt = runopt,
 												 outopt = "-o %s"% out_dir,
@@ -421,7 +424,7 @@ class cPolyAseq:
 	
 			log_prefix = os.path.join(self.get_log_dir(), '%02d_%s' % (self.sstep, sstep_name))
 			runopt = "-n %d"%self.pconf.ncpu
-			run_syscmd_wrapper("Rscript %s" % prog_path,
+			run_syscmd_wrapper(prog_path,
 												 inopt = "-i %s" % dedup_dir,
 												 outopt = "-o %s" % mod_bam_dir,
 												 runopt = runopt,
@@ -471,7 +474,7 @@ class cPolyAseq:
 
 			log_prefix = os.path.join(self.get_log_dir(), '%02d_%s' % (self.sstep, sstep_name))
 
-			run_syscmd_wrapper("Rscript %s" % prog_path,
+			run_syscmd_wrapper(prog_path,
 												 inopt="-i %s" % self.gfa_bam_dir,
 												 outopt="-o %s" % out_dir,
 												 stdout_fn="%s.out" % log_prefix,
@@ -506,7 +509,7 @@ class cPolyAseq:
 			runopt += " -T %s" % self.pconf.sections['cache_dir']['file_path']
 			runopt += " -n %d" % self.pconf.ncpu
 
-			run_syscmd_wrapper("Rscript %s" % prog_path,
+			run_syscmd_wrapper(prog_path,
 												 inopt="-i %s" % self.fq_index_fn,
 												 outopt="-o %s" % self.prepropa_rd,
 												 runopt=runopt,
@@ -533,7 +536,7 @@ class cPolyAseq:
 			runopt = "-n %d" % self.pconf.ncpu
 			runopt += " -c %s" % self.comp_group_fn
 
-			run_syscmd_wrapper("Rscript %s" % prog_path,
+			run_syscmd_wrapper(prog_path,
 												 inopt="-i %s" % self.prepropa_rd,
 												 runopt=runopt,
 												 outopt="-o %s" % out_fn,
@@ -555,7 +558,7 @@ class cPolyAseq:
 
 			log_prefix = os.path.join(self.get_log_dir(), '%02d_%s' % (self.sstep, sstep_name))
 
-			run_syscmd_wrapper("Rscript %s" % prog_path,
+			run_syscmd_wrapper(prog_path,
 												 inopt="-i %s" % apa_rd,
 												 runopt="-w %s" % self.prepropa_rd,
 												 outopt="-o %s" % out_fn,
@@ -578,7 +581,7 @@ class cPolyAseq:
 
 			log_prefix = os.path.join(self.get_log_dir(), '%02d_%s' % (self.sstep, sstep_name))
 
-			run_syscmd_wrapper("Rscript %s" % prog_path,
+			run_syscmd_wrapper(prog_path,
 												 inopt="-i %s" % apa_alt_rd,
 												 runopt="-w %s" % self.prepropa_rd,
 												 outopt="-o %s" % out_fn,
@@ -601,7 +604,7 @@ class cPolyAseq:
 
 			log_prefix = os.path.join(self.get_log_dir(), '%02d_%s' % (self.sstep, sstep_name))
 
-			run_syscmd_wrapper("Rscript %s" % prog_path,
+			run_syscmd_wrapper(prog_path,
 												 inopt="-i %s" % apa_sig_rd,
 												 outopt="-o %s" % out_dir,
 												 runopt=runopt,
@@ -626,7 +629,7 @@ class cPolyAseq:
 
 			log_prefix = os.path.join(self.get_log_dir(), '%02d_%s' % (self.sstep, sstep_name))
 
-			run_syscmd_wrapper("Rscript %s" % prog_path,
+			run_syscmd_wrapper(prog_path,
 												 inopt="-i %s" % apa_sig_rd,
 												 outopt="-o %s" % out_dir,
 												 runopt=runopt,
@@ -647,7 +650,7 @@ class cPolyAseq:
 
 			log_prefix = os.path.join(self.get_log_dir(), '%02d_%s' % (self.sstep, sstep_name))
 
-			run_syscmd_wrapper("Rscript %s" % prog_path,
+			run_syscmd_wrapper(prog_path,
 												 inopt="-i %s -d %s" % (self.prepropa_rd,self.pconf.sections['polya_db2']['bed_path']),
 												 outopt="-o %s" % out_dir,
 												 stdout_fn="%s.out" % log_prefix,
@@ -667,7 +670,7 @@ class cPolyAseq:
 
 			log_prefix = os.path.join(self.get_log_dir(), '%02d_%s' % (self.sstep, sstep_name))
 
-			run_syscmd_wrapper("Rscript %s" % prog_path,
+			run_syscmd_wrapper(prog_path,
 												 inopt="-i %s" % in_dir,
 												 stdout_fn="%s.out" % log_prefix,
 												 stderr_fn="%s.err" % log_prefix,
@@ -687,7 +690,7 @@ class cPolyAseq:
 
 			log_prefix = os.path.join(self.get_log_dir(), '%02d_%s' % (self.sstep, sstep_name))
 
-			run_syscmd_wrapper("Rscript %s" % prog_path,
+			run_syscmd_wrapper(prog_path,
 												 inopt="-i1 %s -i2 %s" % (self.prepropa_rd,apa_sig_rd),
 												 outopt="-o %s" % os.path.join(in_dir, 'output'),
 												 stdout_fn="%s.out" % log_prefix,
@@ -714,7 +717,7 @@ class cPolyAseq:
 
 			log_prefix = os.path.join(self.get_log_dir(), '%02d_%s' % (self.sstep, sstep_name))
 
-			run_syscmd_wrapper("Rscript %s" % prog_path,
+			run_syscmd_wrapper(prog_path,
 												 inopt="-i %s" % apa_sig_rd,
 												 outopt="-o %s" % out_fn,
 												 stdout_fn="%s.out" % log_prefix,
@@ -739,7 +742,7 @@ class cPolyAseq:
 
 			log_prefix = os.path.join(self.get_log_dir(), '%02d_%s' % (self.sstep, sstep_name))
 
-			run_syscmd_wrapper("Rscript %s" % prog_path,
+			run_syscmd_wrapper(prog_path,
 												 inopt="-i %s" % apa_sig_rd,
 												 outopt="-o %s" % out_dir,
 												 stdout_fn="%s.out" % log_prefix,

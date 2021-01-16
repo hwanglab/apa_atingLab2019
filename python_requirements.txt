@@ -7,3 +7,4 @@ argparse
 pyfaidx
 Bio
 deeptools
+regex

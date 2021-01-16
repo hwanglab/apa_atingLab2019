@@ -10,12 +10,13 @@ git clone https://github.com/hwanglab/apa_2019.git
 1. python 2.7 
 	```
 	cd apa_atingLab2019
-	pip install --user -r python_requirements.txt
+	pip install --user -r python_requirements.txt #Alternatively, use conda environment to install packages listed in the requirements.txt
 	```
 
 1. R 3.4.3 packages
 	```
 	handy (refer to https://github.com/jeffbhasin/handy for installation)
+	goldmine
 	argparse
 	BSgenome.Hsapiens.UCSC.hg19
 	corrplot
@@ -25,9 +26,7 @@ git clone https://github.com/hwanglab/apa_2019.git
 	edgeR
 	ggbio
 	ggplot2
-	goldmine
 	gridExtra
-	handy
 	IlluminaHumanMethylation450kanno.ilmn12.hg19
 	matrixStats
 	openxlsx

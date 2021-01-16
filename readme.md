@@ -15,6 +15,7 @@ git clone https://github.com/hwanglab/apa_2019.git
 
 1. R 3.4.3 packages
 	```
+	handy (refer to https://github.com/jeffbhasin/handy for installation)
 	argparse
 	BSgenome.Hsapiens.UCSC.hg19
 	corrplot
